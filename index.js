@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
+
 app.use(cors());
 app.use(express.json());
 
@@ -26,6 +28,13 @@ async function run(){
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         });
+        // delet product from database and server
+        app.delete('/product/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        })
 
     }finally{
         // await client.close();
