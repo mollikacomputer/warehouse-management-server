@@ -1,0 +1,44 @@
+
+const express = require('express');
+const app = express();
+const cors = require('cors');
+
+app.use(cors());
+app.use(express.json());
+
+const ObjectId = require('mongodb').ObjectId;
+
+const port = process.env.PORT || 5000;
+
+const products = [
+    {name: "Oil-5 liters can", quantity: 10, supplier: "Rajesh ", description:"Product Descripton 1", price: 850, picture: "https://www.product-reviews.net/wp-content/uploads/2019/08/biscuits.jpg"},
+    {name: "rice", quantity: 21, supplier: "Mahesh ", price: 950, description:"Product Descripton 6", picture: "https://5.imimg.com/data5/HQ/SB/MY-19588085/sunflower-oil-5ltr-500x500.png"},
+    {name: "biscuites liters can", quantity: 11, supplier: "Bijoy ", description:"Product Descripton 2", price: 550, picture: "https://5.imimg.com/data5/HQ/SB/MY-19588085/sunflower-oil-5ltr-500x500.png"},
+    {name: "Oil-4 liters can", quantity: 15, supplier: "Tinku ", description:"Product Descripton 3", price: 650, picture: "https://5.imimg.com/data5/HQ/SB/MY-19588085/sunflower-oil-5ltr-500x500.png"},
+    {name: "Oil-3 liters can", quantity: 18, supplier: "Pintu ", description:"Product Descripton 4", price: 350, picture: "https://www.product-reviews.net/wp-content/uploads/2019/08/biscuits.jpg"},
+    {name: "Oil-2 liters can", quantity: 19, supplier: "Sujit ", description:"Product Descripton 5", price: 250, picture: "https://5.imimg.com/data5/HQ/SB/MY-19588085/sunflower-oil-5ltr-500x500.png"}
+]
+// mongodb configuration code here
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://dbuser1:S7QV4BHrOQ981beK@cluster0.pgbec.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+client.connect(err => {
+  const collection = client.db("assignment11").collection("product");
+  // perform actions on the collection object
+  client.close();
+});
+
+app.get('/', (req, res) =>{
+    res.send('Connected with my server assignment qqq11sss test')
+});
+app.get('/products', (req, res)=>{
+    res.send(products);
+});
+// add a new product
+
+app.listen(port, ()=>{
+    console.log('Listening to port', port);
+})
+
+
