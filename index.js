@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const res = require('express/lib/response');
 const ObjectId = require('mongodb').ObjectId;
 
 app.use(cors());
@@ -34,16 +35,28 @@ async function run(){
             const query = {_id: ObjectId(id)};
             const result = await productCollection.deleteOne(query);
             res.send(result);
-        })
-        // update product
-       /*  
-        app.get('/product/:id', async(req, res) =>{
+        });
+        // product update
+        app.put('/product/:id', async(req, res) =>{
             const id = req.params.id;
-            const query = {_id:ObjectId(id)};
-            const result = await productCollection.findOne(query);
-            res.send(result);
+            const updatedProduct = req.body;
+            const filter = {_id: ObjectId()};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set:{
+                    // updatedProduct;
+                    name: updatedProduct.name,
+                    quantity: updatedProduct.quantity,
+                    supplier: updatedProduct.supplier,
+                    description: updatedProduct.description,
+                    price: updatedProduct.price,
+                    picture: updatedProduct.picture
+                }
+            };
+            const result = await productCollection.updateOne(filter, updatedDoc, options);
+            res.send(result)
         })
- */
+       
     }finally{
         // await client.close();
     }
